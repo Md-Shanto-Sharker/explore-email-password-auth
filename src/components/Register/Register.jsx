@@ -1,45 +1,55 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import React from "react";
+import { auth } from "../../firebase/firbase.init";
 
 const Register = () => {
-    const handleRegister = e =>{
-        e.preventDefault();
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-        console.log(email,password);
-    }
+  const handleRegister = (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    console.log(email, password);
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
-    <div>
-      <h1>This is Register page</h1>
-      <form onSubmit={handleRegister}>
+    <div className="max-w-sm mx-auto mt-12">
+      <h1 className="font-bold text-2xl mb-4">Pleaser Register</h1>
+      <form className="space-y-4" onSubmit={handleRegister}>
         {/* Email field */}
-        <div className="join">
-          <div>
-            <label className="input validator join-item">
-              <svg
-                className="h-[1em] opacity-50"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <g
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                  strokeWidth="2.5"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                </g>
-              </svg>
-              <input type="email" name="email" placeholder="mail@site.com" required />
-            </label>
-            <div className="validator-hint hidden">
-              Enter valid email address
-            </div>
-          </div>
-         
-        </div>
-        <br /> <br />
+
+        <label className="input validator join-item">
+          <svg
+            className="h-[1em] opacity-50"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <g
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              strokeWidth="2.5"
+              fill="none"
+              stroke="currentColor"
+            >
+              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </g>
+          </svg>
+          <input
+            type="email"
+            name="email"
+            placeholder="mail@site.com"
+            required
+          />
+        </label>
+        <div className="validator-hint hidden">Enter valid email address</div>
+
+        <br />
         {/* Password filed */}
         <label className="input validator">
           <svg
@@ -75,7 +85,8 @@ const Register = () => {
           At least one lowercase letter <br />
           At least one uppercase letter
         </p>
-        <br /><br />
+        <br />
+
         {/* Submit button */}
         <input className="btn btn-primary" type="submit" value="submit" />
       </form>
