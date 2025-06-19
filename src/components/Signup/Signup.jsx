@@ -1,4 +1,7 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../firebase/firbase.init";
 import { FaEye, FaRegEyeSlash } from "react-icons/fa";
@@ -18,13 +21,13 @@ const Signup = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
     const terms = e.target.terms.checked;
-    console.log(email, password,terms);
+    console.log(email, password, terms);
 
     setSuccess(false);
     setErrorMassage("");
 
-    if(!terms){
-      setErrorMassage('please accept our Terms and Conditions');
+    if (!terms) {
+      setErrorMassage("please accept our Terms and Conditions");
       return;
     }
 
@@ -39,7 +42,12 @@ const Signup = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
-        setSuccess(true);
+
+        sendEmailVerification(auth.currentUser).then(() => {
+          setSuccess(true);
+          alert('we sent a verification email.Please check your email')
+         
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -62,7 +70,7 @@ const Signup = () => {
 
           <div className={`relative`}>
             <input
-              type={showPassword ?"text":"password" }
+              type={showPassword ? "text" : "password"}
               name="password"
               className="input"
               placeholder="Password"
@@ -82,18 +90,20 @@ const Signup = () => {
             <a className="link link-hover">Forgot password?</a>
           </div>
 
-
-          
           <label className="label mt-2">
             <input type="checkbox" name="terms" className="checkbox" />
             Accept Term an Conditions
           </label>
           <br />
 
-
           <button className="btn btn-neutral mt-4">Sign Up</button>
         </form>
-        <p>Already have an account? Please <Link className="text-blue-400 underline" to='/login'>Login</Link></p>
+        <p>
+          Already have an account? Please{" "}
+          <Link className="text-blue-400 underline" to="/login">
+            Login
+          </Link>
+        </p>
         {errorMassage && <p className="text-red-500">{errorMassage}</p>}
         {success && (
           <p className="text-green-500">User has create account successfully</p>
