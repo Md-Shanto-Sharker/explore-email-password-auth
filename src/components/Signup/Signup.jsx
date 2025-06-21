@@ -93,7 +93,7 @@ const Signup = () => {
           </div>
 
           <div>
-            <a className="link link-hover">Forgot password?</a>
+            <a  className="link link-hover">Forgot password?</a>
           </div>
 
           <label className="label mt-2">
