@@ -43,6 +43,12 @@ const Signup = () => {
       .then((userCredential) => {
         console.log(userCredential);
 
+        if(!userCredential.user.emailVerified ){
+            alert('please verify your email address')
+        }
+        else{
+          setSuccess(true)
+        }
         sendEmailVerification(auth.currentUser).then(() => {
           setSuccess(true);
           alert('we sent a verification email.Please check your email')
