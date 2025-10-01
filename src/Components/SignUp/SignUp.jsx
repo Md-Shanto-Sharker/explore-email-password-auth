@@ -1,7 +1,11 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../Firebase_init";
 import { FaEye, FaRegEyeSlash } from "react-icons/fa";
+import { Link } from "react-router";
 
 const SignUp = () => {
   const [success, setSuccess] = useState(false);
@@ -30,11 +34,18 @@ const SignUp = () => {
       );
       return;
     }
+
     // Create User
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         console.log(result);
-        setSuccess(true);
+
+        // email verify
+
+        sendEmailVerification(auth.currentUser).then(() => {
+          setSuccess(true);
+          alert("We sent you a verification email. Please check your email");
+        });
       })
       .catch((error) => {
         setErrorMessage(error.message);
@@ -88,6 +99,12 @@ const SignUp = () => {
 
           <button className="btn btn-neutral mt-4">Sign Up</button>
         </form>
+        <p>
+          Already have an Account ? Please{" "}
+          <Link className="underline text-blue-600 font-bold" to="/login">
+            Login
+          </Link>
+        </p>
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         {success && (
           <p className="text-green-500">User has created Successfully</p>
